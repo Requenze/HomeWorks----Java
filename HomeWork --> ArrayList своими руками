@@ -10,9 +10,6 @@ public class MyLinkedList<E> {
             this.element = element;
             this.next = next;
         }
-        public String toString() {
-            return "Node = " + this.element.toString();
-        }
     }
 
     private int size;
@@ -45,13 +42,13 @@ public class MyLinkedList<E> {
         if (size == 0) {
             head = new Node(element);
         } else {
-        Node node = head;
-        for (; node.next != null;) {
-            node = node.next;
+            Node node = head;
+            while (node.next != null) {
+                node = node.next;
+            }
+            node.next = new Node(element);
         }
-        node.next = new Node(element);
         size++;
-        }
         return true;
     }
     public void add(int index, E element) {
@@ -62,21 +59,20 @@ public class MyLinkedList<E> {
             Node node = getNode(index - 1);
             node.next = new Node(element, node.next);
         }
+        size++;
     }
     public E remove(int index) {
-        Node node;
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException();
-        if (size == 0) {
+        Node node;
+        if (index == 0) {
             node = head;
             head = head.next;
-        } else if (index == size - 1) {
-            node = getNode(size - 1);
-            node.next = null;
         } else {
-            Node curNode = getNode(index - 1);
-            node = curNode.next;
-            node.next = node.next.next;
+            Node prev = getNode(index - 1);
+            node = prev.next;
+            prev.next = node.next;
         }
+        node.next = null;
         size--;
         return node.element;
     }
@@ -86,6 +82,40 @@ public class MyLinkedList<E> {
             remove(index);
             return true;
         }
-        else return false;
+        return false;
+    }
+    @Override
+    public String toString() {
+        if (size == 0) return "[]";
+        StringBuilder result = new StringBuilder("[");
+        Node node = head;
+        while (node != null) {
+            result.append(node.element);
+            if (node.next != null) result.append(", ");
+            node = node.next;
+        }
+        result.append("]");
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        MyLinkedList<String> linkedList = new MyLinkedList<>();
+        linkedList.add(0, "test");
+        linkedList.add(1, "hello");
+        linkedList.add(2, "world");
+
+        System.out.println(linkedList);
+
+        linkedList.remove(1);
+        System.out.println(linkedList);
+
+        linkedList.remove("test");
+        System.out.println(linkedList);
+
+        linkedList.add("test");
+        System.out.println(linkedList);
+
+        linkedList.add(1, "hello");
+        System.out.println(linkedList);
     }
 }
