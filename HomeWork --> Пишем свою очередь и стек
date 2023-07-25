@@ -1,0 +1,117 @@
+public class Queue {
+    int size;
+    int item[];
+    int front, rear;
+
+    public Queue(int size) {
+            this.size = size;
+            item = new int[this.size];
+            front = -1;
+            rear = -1;
+    }
+
+    public static void quickSort(int[] source, int leftBorder, int rightBorder) {
+        int leftMarker = leftBorder;
+        int rightMarker = rightBorder;
+        int pivot = source[(leftMarker + rightMarker) / 2];
+        do {
+            while (source[leftMarker] < pivot) {
+                leftMarker++;
+            }
+            while (source[rightMarker] > pivot) {
+                rightMarker--;
+            }
+            if (leftMarker <= rightMarker) {
+                if (leftMarker < rightMarker) {
+                    int tmp = source[leftMarker];
+                    source[leftMarker] = source[rightMarker];
+                    source[rightMarker] = tmp;
+                }
+                leftMarker++;
+                rightMarker--;
+            }
+        } while (leftMarker <= rightMarker);
+
+        if (leftMarker < rightBorder) {
+            quickSort(source, leftMarker, rightBorder);
+        }
+
+        if (leftBorder < rightMarker) {
+            quickSort(source, leftBorder, rightMarker);
+        }
+    }
+
+    private boolean isFull() {
+        if (front == 0 && rear == size - 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEmpty() {
+        if (front == -1) {
+            return true;
+        }
+        return false;
+    }
+
+    public void enQueue(int element) {
+        if (isFull()) {
+            System.out.println("Очередь заполнена!");
+        } else {
+            if (front == -1) {
+                front = 0;
+            }
+            rear++;
+            item[rear] = element;
+            quickSort(item, front, rear);
+            System.out.println("Добавлен елемент " + element);
+        }
+    }
+
+    public int deQueue() {
+        int element;
+        if (isEmpty()) {
+            System.out.println("Queue is empty!");
+            return (-1);
+        } else {
+            element = item[front];
+            if (front >= rear) {
+                front = -1;
+                rear = -1;
+            } else {
+                front++;
+            }
+            System.out.println("Deleted element is" + element);
+            return element;
+        }
+    }
+
+    public void display() {
+        int i;
+        if (isEmpty()) {
+            System.out.println("Queue is empty!");
+        } else {
+            System.out.println("\nIndex FRONT " + front);
+            System.out.println("Elements -> ");
+            for (i = front; i <= rear ; i++) {
+                System.out.println(item[i] + " ");
+            }
+            System.out.println("\nIndex REAR " + rear);
+        }
+    }
+
+    public static void main(String[] args) {
+        Queue q = new Queue(5);
+        q.deQueue();
+        q.enQueue(4);
+        q.enQueue(1);
+        q.enQueue(3);
+        q.enQueue(2);
+        q.enQueue(5);
+        q.enQueue(6);
+        q.display();
+        q.deQueue();
+        q.display();
+    }
+}
