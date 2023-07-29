@@ -1,0 +1,54 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
+public class Phone implements Comparable<Phone> {
+    String name;
+    String model;
+    int price;
+
+
+    public Phone(String name, String model, int price) {
+        this.name = name;
+        this.model = model;
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "телефон: " + model + ", цена: " + price;
+    }
+
+    @Override
+    public int compareTo(Phone o) {
+        return this.price - o.price;
+    }
+
+
+
+    public static void main(String[] args) {
+        ArrayList<Phone> phoneList = new ArrayList<>();
+        phoneList.add(new Phone("Apple", "Iphone 14", 350));
+        phoneList.add(new Phone("Apple", "Iphone 6", 200));
+        phoneList.add(new Phone("Apple", "Iphone 5", 150));
+        phoneList.add(new Phone("Sony", "Xperia 5 III", 159));
+        phoneList.add(new Phone("Sony", "CMD-J5", 7));
+        phoneList.add(new Phone("Sony", "Xperia XA", 199));
+        phoneList.add(new Phone("Samsung", "Galaxy A 12", 150));
+        phoneList.add(new Phone("Samsung", "Galaxy M 12", 120));
+        phoneList.add(new Phone("Samsung", "Galaxy Z Flip", 120));
+        phoneList.add(new Phone("Samsung", "Galaxy Note", 120));
+
+        ArrayList<Phone> result = phoneList.stream()
+                .filter(o -> o.name == "Apple")
+                .collect(() -> new ArrayList<Phone>(),
+                        (list, item) -> list.add(item),
+                        (list1, list2) -> list1.addAll(list2));
+
+
+        phoneList.stream()
+                .sorted()
+                .forEach(System.out::println);
+    }
+}
