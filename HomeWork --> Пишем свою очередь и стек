@@ -4,10 +4,10 @@ public class Queue {
     int front, rear;
 
     public Queue(int size) {
-            this.size = size;
-            item = new int[this.size];
-            front = -1;
-            rear = -1;
+        this.size = size;
+        item = new int[this.size];
+        front = -1;
+        rear = -1;
     }
 
     public static void quickSort(int[] source, int leftBorder, int rightBorder) {
@@ -73,19 +73,23 @@ public class Queue {
         int element;
         if (isEmpty()) {
             System.out.println("Queue is empty!");
-            return (-1);
+            return -1;
         } else {
             element = item[front];
             if (front >= rear) {
                 front = -1;
                 rear = -1;
             } else {
-                front++;
+                for (int i = front; i < rear; i++) {
+                    item[i] = item[i + 1]; // Сдвигаем элементы влево
+                }
+                rear--;
             }
-            System.out.println("Deleted element is" + element);
+            System.out.println("Deleted element is " + element);
             return element;
         }
     }
+
 
     public void display() {
         int i;
@@ -112,6 +116,11 @@ public class Queue {
         q.enQueue(6);
         q.display();
         q.deQueue();
+        q.deQueue();
+        q.deQueue();
+        q.enQueue(2);
+        q.enQueue(5);
+        q.enQueue(6);
         q.display();
     }
 }
